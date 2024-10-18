@@ -1,0 +1,252 @@
+##########           LIQUIBASE FLOWFILE                ##########
+##########  learn more http://docs.liquibase.com/flow  ##########
+
+
+
+## Set up some global variables for property substitution in ANY stage
+globalVariables:
+  CHKSPKGSDIR: "./checks-pkgs"
+  BASECHECKSFILE: "liquibase.checks-settings.conf"
+  
+  ACCESSCONTROLFILE: "liquibase.checks.access-control.yaml"
+  ACCESSCONTROLCHECKS: "SqlGrantWarn,SqlGrantOptionWarn,SqlGrantAdminWarn,SqlRevokeWarn"
+  
+  DATAPROTECTIONFILE: "liquibase.checks.data-protection.yaml"
+  DATAPROTECTIONCHECKS: "ModifyDataTypeWarn,SqlSelectStarWarn,ChangeTruncateTableWarn"
+  
+  SCHEMAPROTECTIONFILE: "liquibase.checks.schema-protection.yaml"    
+  SCHEMAPROTECTIONCHECKS: "WarnOnUseDatabase,TableColumnLimit,ChangeDropTableWarn,ChangeDropColumnWarn,DetectChangeType"
+  
+  CHANGESETSTANDARDSFILE: "liquibase.checks.changeset-standards.yaml"
+  CHANGESETSTANDARDSCHECKS: "RollbackRequired,ChangesetLabelCheck,ChangesetContextCheck,ChangesetCommentCheck,OneChangePerChangeset,RequireChangesetIDisUUID"
+  
+  CODINGSTANDARDSFILE: "liquibase.checks.coding-standards.yaml"  
+  CODINGSTANDARDSCHECKS: "CheckTablesForIndex,TableCommentCheck"
+
+
+## Note: Any command which fails in any stage below result in the command stopping, and endStage being run.
+## A flow file can have one or more stages, each with multiple "actions", 
+## or your flow file can have multiple stages with fewer actions in each stage.
+stages:
+
+
+  ## A prep stage. There can be more than one stage if desired.
+  stage-mkdir:
+
+    actions:
+      # create dir for checks package yaml files to be created in later
+      - type: shell
+        command: bash -c "mkdir -p ${CHKSPKGSDIR}"
+      - type: shell
+        command: bash -c "echo 'Made dir ${CHKSPKGSDIR}'"
+
+
+
+
+  ## turn off all checks
+  stage-checks-disable:
+        
+    actions:
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}
+
+          
+
+  ###### now  this is procedural for now, but could be decomposed into flowfiles since there is a ton of repeat, just with different names
+  ###### but that is en exercise for later!
+
+
+  ## CREATE checks settings files to be used in package
+  stage-access-control-yaml:
+  
+    stageVariables:
+      THISFILE: "${ACCESSCONTROLFILE}" 
+      THESECHECKS: "${ACCESSCONTROLCHECKS}"
+
+    actions:      
+      #
+      # turn on some checks
+      #
+      - type: liquibase
+        command: checks enable
+        cmdArgs: {check-name: "${THESECHECKS}"}
+      #
+      # show all checks just enabled
+      #
+      - type: liquibase
+        command: checks show
+        cmdArgs: {check-status: enabled}
+
+      # create yaml file
+      - type: shell
+        command: bash -c "touch ${CHKSPKGSDIR}/${THISFILE};echo 'created file ${CHKSPKGSDIR}/${THISFILE}'"
+      - type: shell
+        command: bash -c "cp ${BASECHECKSFILE} ${CHKSPKGSDIR}/${THISFILE};echo 'copied enabled checks to ${CHKSPKGSDIR}/${THISFILE}'"
+
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}
+
+
+
+
+  ## CREATE checks settings files to be used in package
+  stage-data-protection-yaml:
+  
+    stageVariables:
+      THISFILE: "${DATAPROTECTIONFILE}" 
+      THESECHECKS: "${DATAPROTECTIONCHECKS}"
+
+    actions:      
+      #
+      # turn on some checks
+      #
+      - type: liquibase
+        command: checks enable
+        cmdArgs: {check-name: "${THESECHECKS}"}
+      #
+      # show all checks just enabled
+      #
+      - type: liquibase
+        command: checks show
+        cmdArgs: {check-status: enabled}
+
+      # create yaml file
+      - type: shell
+        command: bash -c "touch ${CHKSPKGSDIR}/${THISFILE};echo 'created file ${CHKSPKGSDIR}/${THISFILE}'"
+      - type: shell
+        command: bash -c "cp ${BASECHECKSFILE} ${CHKSPKGSDIR}/${THISFILE};echo 'copied enabled checks to ${CHKSPKGSDIR}/${THISFILE}'"
+
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}
+
+
+
+  ## CREATE checks settings files to be used in package
+  stage-schema-protection-yaml:
+  
+    stageVariables:
+      THISFILE: "${SCHEMAPROTECTIONFILE}" 
+      THESECHECKS: "${SCHEMAPROTECTIONCHECKS}"
+
+    actions:      
+      #
+      # turn on some checks
+      #
+      - type: liquibase
+        command: checks enable
+        cmdArgs: {check-name: "${THESECHECKS}"}
+      #
+      # show all checks just enabled
+      #
+      - type: liquibase
+        command: checks show
+        cmdArgs: {check-status: enabled}
+
+      # create yaml file
+      - type: shell
+        command: bash -c "touch ${CHKSPKGSDIR}/${THISFILE};echo 'created file ${CHKSPKGSDIR}/${THISFILE}'"
+      - type: shell
+        command: bash -c "cp ${BASECHECKSFILE} ${CHKSPKGSDIR}/${THISFILE};echo 'copied enabled checks to ${CHKSPKGSDIR}/${THISFILE}'"
+
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}
+        
+
+  ## CREATE checks settings files to be used in package
+  stage-changeset-standards-yaml:
+  
+    stageVariables:
+      THISFILE: "${CHANGESETSTANDARDSFILE}" 
+      THESECHECKS: "${CHANGESETSTANDARDSCHECKS}"
+
+    actions:      
+      #
+      # turn on some checks
+      #
+      - type: liquibase
+        command: checks enable
+        cmdArgs: {check-name: "${THESECHECKS}"}
+      #
+      # show all checks just enabled
+      #
+      - type: liquibase
+        command: checks show
+        cmdArgs: {check-status: enabled}
+
+      # create yaml file
+      - type: shell
+        command: bash -c "touch ${CHKSPKGSDIR}/${THISFILE};echo 'created file ${CHKSPKGSDIR}/${THISFILE}'"
+      - type: shell
+        command: bash -c "cp ${BASECHECKSFILE} ${CHKSPKGSDIR}/${THISFILE};echo 'copied enabled checks to ${CHKSPKGSDIR}/${THISFILE}'"
+
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}        
+
+
+  ## CREATE checks settings files to be used in package
+  stage-coding-standards-yaml:
+  
+    stageVariables:
+      THISFILE: "${CODINGSTANDARDSFILE}" 
+      THESECHECKS: "${CODINGSTANDARDSCHECKS}"
+
+    actions:      
+      #
+      # turn on some checks
+      #
+      - type: liquibase
+        command: checks enable
+        cmdArgs: {check-name: "${THESECHECKS}"}
+      #
+      # show all checks just enabled
+      #
+      - type: liquibase
+        command: checks show
+        cmdArgs: {check-status: enabled}
+
+      # create yaml file
+      - type: shell
+        command: bash -c "touch ${CHKSPKGSDIR}/${THISFILE};echo 'created file ${CHKSPKGSDIR}/${THISFILE}'"
+      - type: shell
+        command: bash -c "cp ${BASECHECKSFILE} ${CHKSPKGSDIR}/${THISFILE};echo 'copied enabled checks to ${CHKSPKGSDIR}/${THISFILE}'"
+
+      #
+      # turn off checks, this will auto perform checks show as well
+      #
+      - type: liquibase
+        command: checks bulkset
+        cmdArgs: {disable: true, force: true}        
+
+
+
+
+
+
+## The endStage ALWAYS RUNS. 
+## So put actions here which you desire to perform whether previous stages' actions succeed or fail.
+## If you do not want any actions to ALWAYS RUN, simply delete the endStage from your flow file.
+
+endStage:
+  actions:
+    - type: liquibase
+      command: dropall
