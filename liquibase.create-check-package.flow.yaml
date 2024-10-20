@@ -341,24 +341,6 @@ stages:
         cmdArgs: {package-file: "${THISPKG_FILE}", package-name: "${THISPKG_NAME}", package-contents: "${CHKSPKGSDIR}/${THISPKG_CONTENTS}"}          
 
 
-  ############## ADD TO THE EXISTING CHECKS PACKAGE FILE WHICH SHIPS WITH THE PRODUCT
-  ## CREATE the checks package file and add intro boilerplate info
-  stage-prepend-to-chkspkg-file:
-    
-    stageVariables:
-      THISPKG_FILE: "${CHECKSPACKAGE_MASTERFILE}"
-      
-      #
-      # add boiler plate info
-      #
-      - type: shell
-        #command: bash -c "printf '%s\n%s\n' ${CHECKSPACKAGE_MASTERFILE_HEADER} $(cat ${THISPKG_FILE}) >${THISPKG_FILE}"
-        command: bash -c "echo 'printf %s\n%s\n ${CHECKSPACKAGE_MASTERFILE_HEADER} $(cat ${THISPKG_FILE}) >${THISPKG_FILE}'"
-
-  
-  
-
-
 
 
 
@@ -370,10 +352,3 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
-      
-      
-      
-      
-      
-      
-      
