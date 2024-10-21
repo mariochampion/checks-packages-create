@@ -1,10 +1,6 @@
 ##########           LIQUIBASE FLOWFILE                ##########
 ##########  learn more http://docs.liquibase.com/flow  ##########
 
-
-## Set up a filewith some boilerplate info to be added to the file to be created
-include:
-  CHECKSPACKAGE_MASTERFILE_HEADER: "liquibase.checks-package-header.yaml"
   
   
 ## Set up some global variables for property substitution in ANY stage
@@ -33,6 +29,8 @@ globalVariables:
   CODINGSTANDARDS_PKGNAME: "coding-standards.pkg"
   
   CHECKSPACKAGE_MASTERFILE: "liquibase.checks-package.yaml" 
+  CHECKSPACKAGE_MASTERFILE_HEADER: "liquibase.checks-package-header.yaml"
+  
   
 
 
@@ -342,6 +340,20 @@ stages:
 
 
 
+  ################# Enhance the just created checks package file with information
+  stage-add-INFO-HEADER-chkspkg-file:
+
+      
+    actions:
+      #
+      # prepend header file using cat to checks package file
+      #
+      - type: shell
+        command: bash -c "cat ${CHECKSPACKAGE_MASTERFILE_HEADER} ${CHECKSPACKAGE_MASTERFILE} > tmmmp.tmp && mv tmmmp.tmp ${CHECKSPACKAGE_MASTERFILE}"
+
+      - type: shell
+        command: bash -c "echo 'added informational header to ${CHECKSPACKAGE_MASTERFILE}'"
+
 
 
 ## The endStage ALWAYS RUNS. 
@@ -352,3 +364,10 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
+      
+      
+      
+      
+      
+      
+      
