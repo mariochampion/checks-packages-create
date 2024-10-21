@@ -41,6 +41,19 @@ stages:
 
 
   ## A prep stage. There can be more than one stage if desired.
+  stage-create-default-conf-file:
+
+    actions:
+      # create dir for checks package yaml files to be created in later
+      - type: shell
+        command: bash -c "1 | liquibase checks show"
+      - type: shell
+        command: bash -c "echo 'default checks setting config file created'"
+
+
+
+
+  ## A prep stage. There can be more than one stage if desired.
   stage-mkdir:
 
     actions:
@@ -66,8 +79,8 @@ stages:
 
           
 
-  ###### now  this is procedural for now, but could be decomposed into flowfiles since there is a ton of repeat, just with different names
-  ###### but that is en exercise for later!
+  ###### now this is procedural for now, but could be decomposed into flowfiles since there is a ton of repeat, just with different names
+  ###### but that is an exercise for later!
 
 
   ## CREATE checks settings files to be used in package
