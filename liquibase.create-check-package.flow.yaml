@@ -352,6 +352,42 @@ stages:
         cmdArgs: {package-file: "${THISPKG_FILE}", package-name: "${THISPKG_NAME}", package-contents: "${CHKSPKGSDIR}/${THISPKG_CONTENTS}"}          
 
 
+  ## add both STANDARDS to one pkg
+  stage-allstandards:
+  
+    stageVariables:
+      THISPKG_FILE: "${CHECKSPACKAGE_MASTERFILE}"
+      THISPKG_NAME: "all-standards.pkg"
+      THISPKG_CONTENTS: "${CHKSPKGSDIR}/${CODINGSTANDARDS_FILE},${CHKSPKGSDIR}/${CHANGESETSTANDARDS_FILE}"
+      
+    actions:
+      #
+      # create package file with package names and checks - ACCESSCONTROL
+      #
+      - type: liquibase
+        command: checks create
+        cmdArgs: {package-file: "${THISPKG_FILE}", package-name: "${THISPKG_NAME}", package-contents: "${THISPKG_CONTENTS}"}     
+
+  ## add both PROTECTIONS to one pkg
+  stage-allprotections:
+  
+    stageVariables:
+      THISPKG_FILE: "${CHECKSPACKAGE_MASTERFILE}"
+      THISPKG_NAME: "all-protections.pkg"
+      THISPKG_CONTENTS: "${CHKSPKGSDIR}/${SCHEMAPROTECTION_FILE},${CHKSPKGSDIR}/${DATAPROTECTION_FILE}"
+      
+    actions:
+      #
+      # create package file with package names and checks - ACCESSCONTROL
+      #
+      - type: liquibase
+        command: checks create
+        cmdArgs: {package-file: "${THISPKG_FILE}", package-name: "${THISPKG_NAME}", package-contents: "${THISPKG_CONTENTS}"}     
+
+
+
+
+
 
   ################# Enhance the just created checks package file with information
   stage-add-INFO-HEADER-chkspkg-file:
@@ -377,10 +413,4 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
-      
-      
-      
-      
-      
-      
       
