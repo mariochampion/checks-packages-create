@@ -18,7 +18,8 @@
 #### liquibase checks run --check-settings-file=liquibase.checks-package.yaml --checks-packages=data-protections.pkg
 ## or
 #### liquibase checks run --check-settings-file=liquibase.checks-package.yaml --checks-packages=changeset-standards.pkg
-#
-#
+## or
+#### liquibase checks run --check-settings-file=liquibase.checks-package.yaml --checks-packages=all-standards.pkg
 
+#### The list of checksPackages
 
