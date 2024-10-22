@@ -1,7 +1,23 @@
 ##########           LIQUIBASE FLOWFILE                ##########
 ##########  learn more http://docs.liquibase.com/flow  ##########
 
-  
+#### About this file liquibase-create-checks-packages.flow.yaml
+#    This flow file generates the checks-packages artifacts shipped with Liquibase:
+#      liquibase.checks-package.yaml
+#      checks-packages (directory)
+#        >liquibase.checks.access-control.yaml
+#        >liquibase.checks.data-protection.yaml
+#        >liquibase.checks.schema-protection.yaml     
+#        >liquibase.checks.changeset-standards.yaml
+#        >liquibase.checks.coding-standards.yaml
+# 
+#    But the real value is to serve as a template for generating your own checks packages
+#    if you already have a base checks-settings file which you would like to split into 
+#    themed checks settings file in a sub-dir, controlled by a checks-package file.
+
+
+
+#### Start the flow file  
   
 ## Set up some global variables for property substitution in ANY stage
 globalVariables:
@@ -40,15 +56,15 @@ globalVariables:
 stages:
 
 
-  ## A prep stage. There can be more than one stage if desired.
+  ## create a default checks-settings file
   stage-create-default-conf-file:
 
     actions:
       # create dir for checks package yaml files to be created in later
       - type: shell
-        command: bash -c "1 | liquibase checks show"
-      - type: shell
-        command: bash -c "echo 'default checks setting config file created'"
+        if: exists("${BASECHECKSFILE}")==empty
+        command: bash -c "1 | liquibase checks show";echo 'default checks setting config file created'
+
 
 
 
@@ -413,5 +429,4 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
-      
-      
+  
