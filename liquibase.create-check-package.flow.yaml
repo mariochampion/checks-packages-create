@@ -5,7 +5,7 @@
   
 ## Set up some global variables for property substitution in ANY stage
 globalVariables:
-  CHKSPKGSDIR: "./checks-pkgs"
+  CHKSPKGSDIR: "./checks-packages"
   BASECHECKSFILE: "liquibase.checks-settings.conf"
   
   ACCESSCONTROL_FILE: "liquibase.checks.access-control.yaml"
@@ -413,4 +413,5 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
+      
       
