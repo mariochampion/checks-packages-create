@@ -18,8 +18,6 @@
 
 
 
-
-
 #### Start the flow file  
   
 ## Set up some global variables for property substitution in ANY stage
@@ -432,4 +430,4 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
-  
+      
