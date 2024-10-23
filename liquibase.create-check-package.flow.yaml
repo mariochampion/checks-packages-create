@@ -17,7 +17,7 @@
 #    themed checks settings file in a sub-dir, controlled by a checks-package file.
 #
 #
-#    To run this file: liquibase flow --checks-settings-file=liquibase.create-checks-packages.flow.yaml
+#    To run this file: liquibase flow --flow-file=liquibase.create-checks-packages.flow.yaml
 #
 
 
