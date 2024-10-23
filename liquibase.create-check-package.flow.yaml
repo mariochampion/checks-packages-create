@@ -15,6 +15,10 @@
 #    But the real value is to serve as a template for generating your own checks packages
 #    if you already have a base checks-settings file which you would like to split into 
 #    themed checks settings file in a sub-dir, controlled by a checks-package file.
+#
+#
+#    To run this file: liquibase flow --checks-settings-file=liquibase.create-checks-packages.flow.yaml
+#
 
 
 
@@ -310,7 +314,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - DATA PROTECTION
       #
       - type: liquibase
         command: checks create
@@ -327,7 +331,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - SCHEMA PROTECTION
       #
       - type: liquibase
         command: checks create
@@ -344,7 +348,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - CHANGESET STANDARDS
       #
       - type: liquibase
         command: checks create
@@ -362,7 +366,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - CODING STANDARDS
       #
       - type: liquibase
         command: checks create
@@ -379,7 +383,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - ALL STANDARDS
       #
       - type: liquibase
         command: checks create
@@ -395,7 +399,7 @@ stages:
       
     actions:
       #
-      # create package file with package names and checks - ACCESSCONTROL
+      # create package file with package names and checks - ALL PROTECTIONS
       #
       - type: liquibase
         command: checks create
@@ -430,4 +434,3 @@ endStage:
   actions:
     - type: shell
       command: bash -c "echo 'New Checks Package file ${CHECKSPACKAGE_MASTERFILE}'"
-      
