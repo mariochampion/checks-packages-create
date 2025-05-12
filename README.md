@@ -37,4 +37,4 @@ themed checks settings file in a sub-dir, controlled by a checks-package file.
 
 ### `liquibase.checks-package-header.yaml`
 The contents of this file are injected/prepended to the `liquibase.checks-package.yaml` created by the flow file.
-The contents are useful informatiomn about checks package files, with links to docs to learn more.
+The contents are useful information about checks package files, with links to docs to learn more.
